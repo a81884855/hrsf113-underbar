@@ -91,12 +91,9 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
-    var output = [];
-    for(var i=0; i<collection.length; i++){
-      if(test(collection[i]) === false){
-        output.push(collection[i])
-      }
-    }return output;
+    return _.filter(collection, function(value){
+      return !test(value);
+    })
   };
 
   // Produce a duplicate-free version of the array.
@@ -388,18 +385,25 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
-    // var source = arguments;
-    // var output = [];
+    var source = arguments;
+    var output = [];
+    var length = 0;
+    for(var i in source){
+      if(source[i].length > length){
+        length = source[i].length
+      }
+    }
 
-    // while(source.length > 0){
-    //   var temp = []
-    //   for (var i = 0; i < source.length; i++) {
-    //     temp.push(source[i].shift())
-    //   }
-    //   output.push(temp)
-    // }
+    for(var j=0; j<length; j++){
+      console.log(source)
+        var temp = [];
+          for(var i in source){
+          temp.push(source[i].shift())
+        }
+        output.push(temp);
+      }
 
-    // return output;
+    return output;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
@@ -423,11 +427,45 @@
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var arg = arguments;
+    var output = [];
+    var test = [];
+
+    for (var i = 1; i < arg.length; i++) {
+      for(var j in arg[i]){
+        test.push(arg[i][j])
+      }
+    }
+
+    _.each(arg[0], function(x){
+      if(test.includes(x)){
+        output.push(x)
+      }
+    });
+
+    return output;
   };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var arg = arguments;
+    var test = [];
+    var output = [];
+
+    for (var i = 1; i < arg.length; i++) {
+      for(var j in arg[i]){
+        test.push(arg[i][j])
+      }
+    }
+
+    _.each(array, function(x){
+      if(!test.includes(x)){
+        output.push(x)
+      }
+    })
+
+    return output;
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
