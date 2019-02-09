@@ -364,6 +364,15 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+    var output = [];
+      for (var i = 0; i < collection.length; i++) {
+        if(typeof functionOrKey === "function"){
+          output.push(functionOrKey.apply(collection[i]));
+        }else{
+          output.push(collection[i][functionOrKey].apply(collection[i]));
+        }
+      }
+    return output;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -379,6 +388,18 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    // var source = arguments;
+    // var output = [];
+
+    // while(source.length > 0){
+    //   var temp = []
+    //   for (var i = 0; i < source.length; i++) {
+    //     temp.push(source[i].shift())
+    //   }
+    //   output.push(temp)
+    // }
+
+    // return output;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
@@ -386,6 +407,17 @@
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    var output = [];
+    while(nestedArray.length > 0){
+      var elements = nestedArray.shift();
+      if(Array.isArray(elements)){
+        for (var i = 0; i < elements.length; i++) {
+          nestedArray.push(elements[i])
+        }
+      }else{
+        output.push(elements);
+      }
+    }return output
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
